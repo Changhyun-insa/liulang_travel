@@ -20,6 +20,19 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // Function to handle close button positioning on scroll
+    function setupModalScroll(modal) {
+        const modalContent = modal.querySelector(".modal-content");
+        const closeBtn = modal.querySelector(".close-button");
+
+        if (modalContent && closeBtn) {
+            modalContent.addEventListener('scroll', () => {
+                const topOffset = 1.5 * 16; // 1.5rem in pixels
+                closeBtn.style.top = `${modalContent.scrollTop + topOffset}px`;
+            });
+        }
+    }
+
     if (openStandardBtn) {
         openStandardBtn.onclick = function(e) {
             e.preventDefault();
@@ -36,8 +49,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     closeBtns.forEach(btn => {
         btn.onclick = function() {
-            closeModal(standardModal);
-            closeModal(specialModal);
+            // Find the parent modal and close it
+            const modal = btn.closest('.modal');
+            closeModal(modal);
         }
     });
 
@@ -49,6 +63,14 @@ document.addEventListener('DOMContentLoaded', () => {
             closeModal(specialModal);
         }
     });
+
+    // Setup scroll behavior for each modal
+    if (standardModal) {
+        setupModalScroll(standardModal);
+    }
+    if (specialModal) {
+        setupModalScroll(specialModal);
+    }
 
     // Mobile menu toggle
     const menuToggle = document.querySelector('.menu-toggle');
