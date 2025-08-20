@@ -1,38 +1,54 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Modal functionality
-    const modal = document.getElementById("standard-terms-modal");
-    const btn = document.getElementById("open-standard-terms");
-    const closeBtn = document.querySelector(".close-button");
-    const modalContent = document.querySelector(".modal-content");
+    const standardModal = document.getElementById("standard-terms-modal");
+    const specialModal = document.getElementById("special-terms-modal");
+    const openStandardBtn = document.getElementById("open-standard-terms");
+    const openSpecialBtn = document.getElementById("open-special-terms");
+    const closeBtns = document.querySelectorAll(".close-button");
 
-    if (btn) {
-        btn.onclick = function(e) {
+    function openModal(modal) {
+        if (modal) {
+            modal.style.display = "block";
+            document.body.style.overflow = "hidden";
+        }
+    }
+
+    function closeModal(modal) {
+        if (modal) {
+            modal.style.display = "none";
+            document.body.style.overflow = "auto";
+        }
+    }
+
+    if (openStandardBtn) {
+        openStandardBtn.onclick = function(e) {
             e.preventDefault();
-            if (modal) {
-                modal.style.display = "block";
-                document.body.style.overflow = "hidden";
-            }
+            openModal(standardModal);
         }
     }
 
-    if (closeBtn) {
-        closeBtn.onclick = function() {
-            if (modal) {
-                modal.style.display = "none";
-                document.body.style.overflow = "auto";
-            }
+    if (openSpecialBtn) {
+        openSpecialBtn.onclick = function(e) {
+            e.preventDefault();
+            openModal(specialModal);
         }
     }
 
-    // Keep close button fixed on scroll
-    if (modalContent) {
-        modalContent.addEventListener('scroll', () => {
-            if (closeBtn) {
-                const topOffset = 1.5 * 16; // 1.5rem in pixels (assuming 1rem = 16px)
-                closeBtn.style.top = `${modalContent.scrollTop + topOffset}px`;
-            }
-        });
-    }
+    closeBtns.forEach(btn => {
+        btn.onclick = function() {
+            closeModal(standardModal);
+            closeModal(specialModal);
+        }
+    });
+
+    window.addEventListener('click', e => {
+        if (e.target == standardModal) {
+            closeModal(standardModal);
+        }
+        if (e.target == specialModal) {
+            closeModal(specialModal);
+        }
+    });
 
     // Mobile menu toggle
     const menuToggle = document.querySelector('.menu-toggle');
@@ -43,14 +59,6 @@ document.addEventListener('DOMContentLoaded', () => {
             menuToggle.classList.toggle('active');
         });
     }
-
-    // Close modal when clicking outside
-    window.addEventListener('click', e => {
-        if (e.target == modal) {
-            modal.style.display = "none";
-            document.body.style.overflow = "auto";
-        }
-    });
 
     // Close mobile menu when clicking on a link
     document.querySelectorAll('.nav-link').forEach(link => {
@@ -67,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Smooth scroll behavior for internal links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
-            if (this.id === 'open-standard-terms' || this.classList.contains('dropdown-toggle')) {
+            if (this.id === 'open-standard-terms' || this.id === 'open-special-terms' || this.classList.contains('dropdown-toggle')) {
                 return; // Handled by other listeners
             }
             
