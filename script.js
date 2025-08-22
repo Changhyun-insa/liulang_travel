@@ -91,8 +91,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Load modals and then initialize their functionality
     Promise.all([
-        loadModal('standard-terms-modal', 'terms/modal_standard_terms.html'),
-        loadModal('special-terms-modal', 'terms/modal_special_terms.html')
+        loadModal('standard-terms-modal', '/terms/modal_standard_terms.html'),
+        loadModal('special-terms-modal', '/terms/modal_special_terms.html')
     ]).then(() => {
         initializeModals();
     });
