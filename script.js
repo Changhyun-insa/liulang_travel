@@ -107,6 +107,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (path === '/' || path === '/index.html') {
             contentPath = 'main.html';
             imagePrefix = ''; // Images are in the root asset folder
+        } else if (path === '/product' || path === '/product/') {
+            contentPath = '/product/main.html';
+            imagePrefix = '';
         } else if (path === '/product/1' || path === '/product/1/') {
             contentPath = '/product/1/main.html';
             imagePrefix = '/product/1/'; // Images are in product/1 folder
