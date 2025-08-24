@@ -1,4 +1,15 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Handle redirect from 404.html
+    (function() {
+        const redirect = sessionStorage.getItem('redirect');
+        if (redirect) {
+            sessionStorage.removeItem('redirect');
+            if (redirect !== window.location.pathname) {
+                history.replaceState(null, '', redirect);
+            }
+        }
+    })();
+
     // Function to load modal content
     async function loadModal(modalId, filePath) {
         try {
@@ -213,3 +224,4 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 });
+
