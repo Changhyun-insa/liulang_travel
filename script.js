@@ -114,6 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const path = window.location.pathname;
         let contentPath = '';
         let imagePrefix = '';
+        const productDetailMatch = path.match(/^\/product\/(\d+)\/?$/);
 
         if (path === '/' || path === '/index.html') {
             contentPath = 'main.html';
@@ -121,9 +122,10 @@ document.addEventListener('DOMContentLoaded', () => {
         } else if (path === '/product' || path === '/product/') {
             contentPath = '/product/main.html';
             imagePrefix = '';
-        } else if (path === '/product/1' || path === '/product/1/') {
-            contentPath = '/product/1/main.html';
-            imagePrefix = '/product/1/'; // Images are in product/1 folder
+        } else if (productDetailMatch) {
+            const productId = productDetailMatch[1];
+            contentPath = `/product/${productId}/main.html`;
+            imagePrefix = `/product/${productId}/`;
         } else {
             // If path is not recognized, redirect to root
             history.replaceState(null, '', '/');
