@@ -170,13 +170,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Intercept link clicks for SPA navigation
     document.body.addEventListener('click', e => {
-        if (e.target.tagName === 'A' && e.target.closest('#nav-menu')) {
-            const href = e.target.getAttribute('href');
-            if (href && (href.startsWith('/') || href.startsWith('./') || href.startsWith('../')) && !href.startsWith('#')) {
-                e.preventDefault();
-                history.pushState(null, '', href);
-                handleRouting();
-            }
+        const anchor = e.target.closest('a');
+
+        if (!anchor) {
+            return;
+        }
+
+        const href = anchor.getAttribute('href');
+        const target = anchor.getAttribute('target');
+        const isExternal = href?.startsWith('http') || target === '_blank';
+        const isSpecialLink = href?.startsWith('#') || href?.startsWith('tel:') || href?.startsWith('mailto:');
+
+        if (href && !isExternal && !isSpecialLink) {
+            e.preventDefault();
+            history.pushState(null, '', href);
+            handleRouting();
         }
     });
 
@@ -224,4 +232,3 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 });
-

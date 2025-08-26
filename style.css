@@ -11,6 +11,8 @@ body {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     min-height: 100vh;
     overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
 }
 
 .container {
@@ -168,12 +170,9 @@ nav {
 }
 
 /* Main Content */
-main {
+#main-content {
+    flex: 1;
     padding-top: 90px;
-}
-
-.main-content {
-    min-height: calc(100vh - 120px);
 }
 
 .hero-section {
@@ -369,7 +368,7 @@ main {
 footer {
     background: rgba(0, 0, 0, 0.9);
     color: white;
-    padding: 2rem;
+    padding: 2rem 0;
     text-align: center;
     backdrop-filter: blur(10px);
 }
@@ -600,8 +599,8 @@ html {
 /* Floating Action Button (FAB) for KakaoTalk */
 .kakao-fab {
     position: fixed;
-    bottom: 80px;
-    right: 20px;
+    bottom: 40px;
+    right: 40px;
     background-color: #FEE500; /* Kakao yellow */
     background-image: url('/asset/kakao_icon.png'); /* Add background image */
     background-size: 80%; /* Adjust size as needed */
@@ -629,8 +628,8 @@ html {
     .kakao-fab {
         width: 50px;
         height: 50px;
-        bottom: 60px;
-        right: 15px;
+        bottom: 20px;
+        right: 20px;
     }
     .kakao-fab img {
         width: 30px;
