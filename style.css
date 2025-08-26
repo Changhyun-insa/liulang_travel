@@ -557,20 +557,10 @@ html {
 }
 
 .product-images {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1.5rem;
     margin-top: 2rem;
-    max-width: 1200px; /* Add max-width */
-    margin-left: auto; /* Center the grid */
-    margin-right: auto; /* Center the grid */
-}
-
-@media (min-width: 1024px) { /* New media query for larger screens */
-    .product-images {
-        grid-template-columns: repeat(3, 1fr); /* Show 3 images per row */
-        gap: 2rem; /* Increase gap for larger screens */
-    }
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .product-images img {
@@ -579,6 +569,7 @@ html {
     border-radius: 15px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: 1.5rem;
 }
 
 @media (max-width: 768px) {
@@ -589,10 +580,6 @@ html {
 
     .product-detail-section h1 {
         font-size: 2rem;
-    }
-
-    .product-images {
-        grid-template-columns: 1fr;
     }
 }
 
@@ -700,7 +687,6 @@ html {
 
 .product-list img {
     width: 100%;
-    height: 200px;
     object-fit: cover;
 }
 
@@ -724,5 +710,49 @@ html {
 @media (min-width: 769px) {
     .product-list {
         grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Sticky Footer for Product Page */
+.sticky-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem 0;
+    z-index: 999;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.sticky-footer .product-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+.sticky-footer .product-name {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.sticky-footer .product-price {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #667eea;
+    white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+    .sticky-footer {
+        padding: 1rem 0;
+    }
+    .sticky-footer .product-name,
+    .sticky-footer .product-price {
+        font-size: 1.1rem;
     }
 }
