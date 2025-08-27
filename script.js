@@ -234,54 +234,60 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     /**
-     * sticky-footer의 존재 여부와 높이에 따라 카카오톡 FAB의 위치를 동적으로 관리합니다.
+     * 동적인 sticky footer의 높이를 감지하여 레이아웃을 조정합니다.
+     * 이 함수 하나로 메인 푸터 가려짐 문제와 FAB 위치 문제를 모두 해결합니다.
      * - SPA 페이지 전환 시: MutationObserver가 #main-content의 변경을 감지하여 로직을 재실행합니다.
-     * - 푸터 높이 변경 시: ResizeObserver가 실시간으로 푸터 높이를 감지하여 FAB 위치를 조절합니다.
+     * - 푸터 높이 변경 시: ResizeObserver가 실시간으로 푸터 높이를 감지하여 스타일을 조절합니다.
      * - 브라우저 창 크기 변경 시: resize 이벤트를 통해 반응형으로 위치를 재계산합니다.
      */
-    function initializeFabPositionManager() {
-        const fab = document.querySelector('.kakao-fab');
-        if (!fab) return;
+    function initializeStickyFooterLayoutManager() {
+        const body = document.body;
+        const mainContent = document.getElementById('main-content');
+        if (!mainContent) return;
 
         let footerResizeObserver = null;
 
-        const updateFabPosition = () => {
-            const footer = document.querySelector('.sticky-footer');
+        const adjustLayout = () => {
+            const stickyFooter = document.querySelector('.sticky-footer');
 
-            // 이전에 연결된 ResizeObserver가 있다면 해제합니다.
+            // 이전 Observer가 있다면 연결을 해제합니다.
             if (footerResizeObserver) {
                 footerResizeObserver.disconnect();
+                footerResizeObserver = null;
             }
 
-            if (footer) {
-                // sticky-footer가 존재하면 높이 변경을 감지합니다.
-                footerResizeObserver = new ResizeObserver(() => {
-                    const footerHeight = footer.offsetHeight;
-                    const margin = window.innerWidth <= 768 ? 20 : 40; // 푸터와 버튼 사이의 여백
-                    fab.style.bottom = `${footerHeight + margin}px`;
-                });
-                footerResizeObserver.observe(footer);
+            if (stickyFooter) {
+                // 실제 스타일을 조정하는 함수
+                const performAdjustment = () => {
+                    const footerHeight = stickyFooter.offsetHeight;
+                    // 1. FAB 위치 조정을 위해 CSS 변수에 높이 값을 설정합니다.
+                    document.documentElement.style.setProperty('--sticky-footer-height', `${footerHeight}px`);
+                    // 2. 메인 푸터가 가려지지 않도록 body의 하단에 padding을 추가합니다.
+                    body.style.paddingBottom = `${footerHeight}px`;
+                };
 
-                // 초기 위치를 즉시 설정합니다.
-                const footerHeight = footer.offsetHeight;
-                const margin = window.innerWidth <= 768 ? 20 : 40;
-                fab.style.bottom = `${footerHeight + margin}px`;
+                // ResizeObserver로 푸터 높이의 실시간 변경을 감지합니다. (예: 텍스트 줄바꿈)
+                footerResizeObserver = new ResizeObserver(performAdjustment);
+                footerResizeObserver.observe(stickyFooter);
+
+                // 초기 실행
+                performAdjustment();
             } else {
-                // sticky-footer가 없으면 기본 위치로 리셋합니다.
-                const defaultBottom = window.innerWidth <= 768 ? '20px' : '40px';
-                fab.style.bottom = defaultBottom;
+                // sticky-footer가 없는 페이지에서는 변수와 padding을 초기화합니다.
+                document.documentElement.style.setProperty('--sticky-footer-height', '0px');
+                body.style.paddingBottom = '0px';
             }
         };
 
-        // #main-content의 내용이 변경될 때마다(페이지 이동 시) 위치를 다시 계산합니다.
-        const mainContent = document.getElementById('main-content');
-        if (mainContent) {
-            new MutationObserver(updateFabPosition).observe(mainContent, { childList: true });
-        }
+        // 페이지 콘텐츠가 변경될 때(SPA 네비게이션) 레이아웃을 다시 조정합니다.
+        new MutationObserver(adjustLayout).observe(mainContent, { childList: true });
 
-        window.addEventListener('resize', updateFabPosition);
-        updateFabPosition(); // 페이지 최초 로드 시 실행
+        // 브라우저 창 크기가 변경될 때 레이아웃을 다시 조정합니다.
+        window.addEventListener('resize', adjustLayout);
+
+        // 최초 로드 시 실행합니다.
+        adjustLayout();
     }
 
-    initializeFabPositionManager();
+    initializeStickyFooterLayoutManager();
 });
