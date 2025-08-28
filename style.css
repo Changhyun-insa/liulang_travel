@@ -858,3 +858,31 @@ html {
     opacity: 1;
     bottom: 50px;
 }
+
+.product-list li.sold-out {
+    filter: grayscale(100%);
+    position: relative;
+}
+
+.product-list li.sold-out::before {
+    content: '판매 종료';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 10px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    z-index: 1;
+}
+
+.product-list li.sold-out a {
+    cursor: not-allowed;
+}
+
+.sold-out-detail {
+    filter: grayscale(100%);
+}

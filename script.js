@@ -157,6 +157,40 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
                 mainContentDiv.innerHTML = tempDiv.innerHTML;
 
+                const soldOutProducts = ['1']; // 판매 종료 상품 ID 목록
+
+                // 판매 종료된 상품 페이지 처리
+                if (productDetailMatch && soldOutProducts.includes(productDetailMatch[1])) {
+                    // 공유 버튼 비활성화
+                    const shareButton = document.getElementById('share-button');
+                    if (shareButton) {
+                        shareButton.style.display = 'none';
+                    }
+
+                    // sold-out-detail 클래스 추가
+                    const mainElement = mainContentDiv.querySelector('main');
+                    const stickyFooter = mainContentDiv.querySelector('.sticky-footer');
+                    if (mainElement) {
+                        mainElement.classList.add('sold-out-detail');
+                    }
+                    if (stickyFooter) {
+                        stickyFooter.classList.add('sold-out-detail');
+                    }
+                }
+
+                // 상품 목록 페이지에서 판매 종료된 상품 처리
+                if (path === '/product' || path === '/product/') {
+                    document.querySelectorAll('.product-list a').forEach(anchor => {
+                        const match = anchor.href.match(/\/product\/(\d+)/);
+                        if (match && soldOutProducts.includes(match[1])) {
+                            const listItem = anchor.closest('li');
+                            if (listItem) {
+                                listItem.classList.add('sold-out');
+                            }
+                        }
+                    });
+                }
+
             } catch (error) {
                 console.error('Error loading content:', error);
                 // Optionally, redirect to a 404 page or show an error message
@@ -175,6 +209,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const anchor = e.target.closest('a');
 
         if (!anchor) {
+            return;
+        }
+
+        // 판매 종료된 상품 링크 클릭 방지
+        if (anchor.closest('.sold-out')) {
+            e.preventDefault();
+            showToast('해당 상품은 판매가 종료되었습니다.');
             return;
         }
 
@@ -316,17 +357,19 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Use event delegation on the document for dynamically loaded share buttons.
-    // This is safer as script.js is loaded in the <head>.
     document.addEventListener('click', function(event) {
-        // Check if the clicked element is the share button
-        if (event.target.id === 'share-button') {
+        const shareButton = event.target.closest('#share-button');
+        if (shareButton) {
             navigator.clipboard.writeText(window.location.href)
                 .then(() => {
-                    // On success, show a confirmation toast
+                    const originalText = shareButton.innerHTML;
                     showToast('현재 링크가 복사되었습니다.\n공유를 원하시는 곳에 붙여넣어 보세요!😘');
+                    shareButton.innerHTML = '❤️';
+                    setTimeout(() => {
+                        shareButton.innerHTML = originalText;
+                    }, 2000);
                 })
                 .catch(err => {
-                    // On failure, log the error and show an error toast
                     console.error('클립보드 복사 실패:', err);
                     showToast('클립보드 복사에 실패했습니다.😭');
                 });
