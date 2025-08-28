@@ -1,6 +1,9 @@
 <main>
     <section class="product-detail-section">
-        <h1>상품 상세 정보</h1>
+        <div class="product-title-container">
+            <h1>상품 상세 정보</h1>
+            <button id="share-button" class="share-button">공유하기</button>
+        </div>
         <div class="product-images">
             <img src="1.png" alt="상품 이미지 1">
             <img src="2.png" alt="상품 이미지 2">
@@ -19,7 +22,12 @@
     <div class="container">
         <div class="product-info">
             <span class="product-name">1차 [헬스키X리우랑] 상해 야오쉐 실내스키장 미식, 스키투어 해외스키여행</span>
-            <span class="product-price">900,000원</span>
+            <div class="sticky-footer-right">
+                <div class="price-container-sticky">
+                    <del class="original-price-sticky">900,000원</del>
+                    <span class="discounted-price-sticky">800,000원</span>
+                </div>
+            </div>
         </div>
     </div>
 </div>

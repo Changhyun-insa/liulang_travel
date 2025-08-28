@@ -290,4 +290,46 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     initializeStickyFooterLayoutManager();
+
+    // This function shows a toast notification
+    function showToast(message) {
+        // Remove any existing toasts to prevent stacking
+        const existingToast = document.querySelector('.toast-notification');
+        if (existingToast) {
+            existingToast.remove();
+        }
+
+        const toast = document.createElement('div');
+        toast.textContent = message;
+        toast.className = 'toast-notification';
+        document.body.appendChild(toast);
+
+        // Animate in
+        setTimeout(() => toast.classList.add('show'), 10);
+
+        // Start fade out after 2.5 seconds
+        setTimeout(() => {
+            toast.classList.remove('show');
+            // Remove the element from DOM after transition ends
+            toast.addEventListener('transitionend', () => toast.remove());
+        }, 2500);
+    }
+
+    // Use event delegation on the document for dynamically loaded share buttons.
+    // This is safer as script.js is loaded in the <head>.
+    document.addEventListener('click', function(event) {
+        // Check if the clicked element is the share button
+        if (event.target.id === 'share-button') {
+            navigator.clipboard.writeText(window.location.href)
+                .then(() => {
+                    // On success, show a confirmation toast
+                    showToast('현재 링크가 복사되었습니다.\n공유를 원하시는 곳에 붙여넣어 보세요!😘');
+                })
+                .catch(err => {
+                    // On failure, log the error and show an error toast
+                    console.error('클립보드 복사 실패:', err);
+                    showToast('클립보드 복사에 실패했습니다.😭');
+                });
+        }
+    });
 });
