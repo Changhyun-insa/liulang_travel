@@ -767,7 +767,6 @@ html {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 1rem;
 }
 
 .sticky-footer .product-name {
@@ -780,7 +779,7 @@ html {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    flex-shrink: 0;
+    min-width: 120px;
 }
 
 .original-price-sticky {
@@ -809,7 +808,6 @@ html {
 .sticky-footer-right {
     display: flex;
     align-items: center;
-    gap: 1rem;
 }
 
 /* Share Button */
