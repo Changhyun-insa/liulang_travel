@@ -157,6 +157,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
                 mainContentDiv.innerHTML = tempDiv.innerHTML;
 
+                if (productDetailMatch) {
+                    window.scrollTo(0, 0);
+                }
+
                 const soldOutProducts = ['1']; // 판매 종료 상품 ID 목록
 
                 // 판매 종료된 상품 페이지 처리
