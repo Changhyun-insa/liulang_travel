@@ -636,6 +636,42 @@ html {
     }
 }
 
+/* Share FAB */
+.share-fab {
+    position: fixed;
+    bottom: calc(var(--sticky-footer-height, 0px) + 110px); /* Stacked on top of kakao-fab */
+    right: 40px;
+    background-color: #ffffff; /* White background */
+    background-image: url('/asset/share_icon.png');
+    background-size: 70%;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: none; /* Initially hidden, controlled by JS */
+    align-items: center;
+    justify-content: center;
+}
+
+.share-fab:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+}
+
+@media (max-width: 768px) {
+    .share-fab {
+        width: 50px;
+        height: 50px;
+        bottom: calc(var(--sticky-footer-height, 0px) + 80px); /* 20px (fab-bottom) + 50px (fab-height) + 10px (spacing) */
+        right: 20px;
+    }
+}
+
 /* Product List Styles */
 .product-list-container {
     background: rgba(255, 255, 255, 0.95);
@@ -810,28 +846,7 @@ html {
     align-items: center;
 }
 
-/* Share Button */
-.share-button {
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    color: white;
-    padding: 0.75rem 1.5rem;
-    border: none;
-    border-radius: 50px;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    white-space: nowrap; /* Prevent button text from wrapping */
-    position: absolute;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
-}
 
-.share-button:hover {
-    transform: translateY(-50%) translateY(-2px);
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-}
 
 /* Toast Notification */
 .toast-notification {

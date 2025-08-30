@@ -161,14 +161,20 @@ document.addEventListener('DOMContentLoaded', () => {
                     window.scrollTo(0, 0);
                 }
 
+                const shareFab = document.getElementById('share-button');
+                if (productDetailMatch) {
+                    shareFab.style.display = 'flex';
+                } else {
+                    shareFab.style.display = 'none';
+                }
+
                 const soldOutProducts = ['1']; // 판매 종료 상품 ID 목록
 
                 // 판매 종료된 상품 페이지 처리
                 if (productDetailMatch && soldOutProducts.includes(productDetailMatch[1])) {
                     // 공유 버튼 비활성화
-                    const shareButton = document.getElementById('share-button');
-                    if (shareButton) {
-                        shareButton.style.display = 'none';
+                    if (shareFab) {
+                        shareFab.style.display = 'none';
                     }
 
                     // sold-out-detail 클래스 추가
@@ -381,13 +387,19 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('click', function(event) {
         const shareButton = event.target.closest('#share-button');
         if (shareButton) {
+            event.preventDefault(); // Prevent default anchor behavior
             navigator.clipboard.writeText(window.location.href)
                 .then(() => {
-                    const originalText = shareButton.innerHTML;
                     showToast('현재 링크가 복사되었습니다.\n공유를 원하시는 곳에 붙여넣어 보세요!😘');
+                    
+                    // Temporarily change appearance
+                    shareButton.style.backgroundImage = 'none';
                     shareButton.innerHTML = '❤️';
+                    
                     setTimeout(() => {
-                        shareButton.innerHTML = originalText;
+                        // Restore original appearance
+                        shareButton.innerHTML = '';
+                        shareButton.style.backgroundImage = ''; // Reverts to stylesheet's value
                     }, 2000);
                 })
                 .catch(err => {
