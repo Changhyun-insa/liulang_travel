@@ -182,17 +182,34 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }
 
-                // 상품 목록 페이지에서 판매 종료된 상품 처리
+                // 상품 목록 페이지에서 판매 종료된 상품 처리 및 재정렬
                 if (path === '/product' || path === '/product/') {
-                    document.querySelectorAll('.product-list a').forEach(anchor => {
-                        const match = anchor.href.match(/\/product\/(\d+)/);
-                        if (match && soldOutProducts.includes(match[1])) {
-                            const listItem = anchor.closest('li');
-                            if (listItem) {
-                                listItem.classList.add('sold-out');
+                    const productList = document.querySelector('.product-list');
+                    if (productList) {
+                        const items = Array.from(productList.querySelectorAll('li'));
+                        const soldOutItems = [];
+                        const availableItems = [];
+
+                        items.forEach(item => {
+                            const anchor = item.querySelector('a');
+                            if (anchor) {
+                                const match = anchor.href.match(/\/product\/(\d+)/);
+                                if (match && soldOutProducts.includes(match[1])) {
+                                    item.classList.add('sold-out');
+                                    soldOutItems.push(item);
+                                } else {
+                                    availableItems.push(item);
+                                }
+                            } else {
+                                availableItems.push(item);
                             }
-                        }
-                    });
+                        });
+
+                        // Clear the list and append sorted items
+                        productList.innerHTML = '';
+                        availableItems.forEach(item => productList.appendChild(item));
+                        soldOutItems.forEach(item => productList.appendChild(item));
+                    }
                 }
 
             } catch (error) {
