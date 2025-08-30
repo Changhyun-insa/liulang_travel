@@ -841,10 +841,11 @@ html {
     transform: translateX(-50%);
     background-color: rgba(0, 0, 0, 0.8);
     color: white;
-    padding: 1rem 3rem;
+    padding: 1rem 2rem;
     border-radius: 25px;
     z-index: 3000;
     font-size: 0.9rem;
+    word-break: keep-all;
     opacity: 0;
     transition: opacity 0.4s ease, bottom 0.4s ease;
     white-space: pre-wrap; /* Allow newlines (\n) to be displayed */
