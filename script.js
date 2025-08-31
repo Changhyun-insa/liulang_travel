@@ -1,25 +1,25 @@
 document.addEventListener('DOMContentLoaded', () => {
     // --- UTILITY FUNCTIONS ---
     function showToast(message) {
-            const existingToast = document.querySelector('.toast-notification');
-            if (existingToast) {
-                existingToast.remove();
-            }
-            const toast = document.createElement('div');
-            toast.textContent = message;
-            toast.className = 'toast-notification';
-            document.body.appendChild(toast);
-            setTimeout(() => toast.classList.add('show'), 10);
-            setTimeout(() => {
-                toast.classList.remove('show');
-                toast.addEventListener('transitionend', () => toast.remove());
-            }, 2500);
+        const existingToast = document.querySelector('.toast-notification');
+        if (existingToast) {
+            existingToast.remove();
         }
+        const toast = document.createElement('div');
+        toast.textContent = message;
+        toast.className = 'toast-notification';
+        document.body.appendChild(toast);
+        setTimeout(() => toast.classList.add('show'), 10);
+        setTimeout(() => {
+            toast.classList.remove('show');
+            toast.addEventListener('transitionend', () => toast.remove());
+        }, 2500);
+    }
 
-        const qrCodeCache = {}; // Added for QR code caching
+    const qrCodeCache = {}; // Added for QR code caching
 
-        // --- MODAL HANDLING ---
-        const modals = {};
+    // --- MODAL HANDLING ---
+    const modals = {};
 
     function openModal(modal) {
         if (modal) {
