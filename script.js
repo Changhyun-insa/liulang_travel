@@ -94,6 +94,43 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // --- QR CODE DECODING ---
+    function decodeQrCode(imageUrl) {
+        const paymentLinkButton = document.getElementById('payment-link-button');
+        paymentLinkButton.classList.remove('visible'); // Reset button state
+
+        if (!imageUrl) {
+            return;
+        }
+
+        const img = new Image();
+        img.crossOrigin = "Anonymous";
+        
+        img.onload = () => {
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d', { willReadFrequently: true });
+            canvas.width = img.width;
+            canvas.height = img.height;
+            context.drawImage(img, 0, 0, img.width, img.height);
+            const imageData = context.getImageData(0, 0, img.width, img.height);
+            
+            const code = jsQR(imageData.data, imageData.width, imageData.height);
+
+            if (code && code.data) {
+                paymentLinkButton.href = code.data;
+                paymentLinkButton.classList.add('visible');
+            } else {
+                console.log("No QR Code found in image: " + imageUrl);
+            }
+        };
+        
+        img.onerror = () => {
+            console.error("Failed to load image for QR Code decoding: " + imageUrl);
+        };
+
+        img.src = imageUrl;
+    }
+
     // --- ROUTING ---
     async function handleRouting() {
         const mainContentDiv = document.getElementById('main-content');
@@ -227,7 +264,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const productId = productDetailMatch[1];
             paymentModal.dataset.productId = productId;
             const paymentImage = document.getElementById('payment-image');
-            paymentImage.src = `/product/${productId}/kakao_income.png`;
+            const imageUrl = `/product/${productId}/kakao_income.png`;
+            paymentImage.src = imageUrl;
+            
+            decodeQrCode(imageUrl);
+
             paymentModal.querySelectorAll('.payment-tab').forEach(t => t.classList.remove('active'));
             paymentModal.querySelector('.payment-tab[data-payment="kakao"]').classList.add('active');
             openModal(paymentModal);
@@ -246,8 +287,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 kakao: `/product/${productId}/kakao_income.png`,
                 toss: `/product/${productId}/toss_income.png`
             };
-            if (paymentImage && imagePaths[paymentMethod]) {
-                paymentImage.src = imagePaths[paymentMethod];
+            const newImageUrl = imagePaths[paymentMethod];
+            if (paymentImage && newImageUrl) {
+                paymentImage.src = newImageUrl;
+                decodeQrCode(newImageUrl);
                 paymentModal.querySelectorAll('.payment-tab').forEach(t => t.classList.remove('active'));
                 tab.classList.add('active');
             }
@@ -257,7 +300,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function globalClickHandler(event) {
         const target = event.target;
 
-        // Prioritize specific element handlers over generic ones like anchors
         const shareButton = target.closest('#share-button');
         if (shareButton) {
             event.preventDefault();
@@ -301,7 +343,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // --- Generic Anchor Handling (should be last) ---
         const anchor = target.closest('a');
         if (anchor) {
             if (anchor.closest('.sold-out')) {
