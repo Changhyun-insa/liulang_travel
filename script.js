@@ -1,23 +1,25 @@
 document.addEventListener('DOMContentLoaded', () => {
     // --- UTILITY FUNCTIONS ---
     function showToast(message) {
-        const existingToast = document.querySelector('.toast-notification');
-        if (existingToast) {
-            existingToast.remove();
+            const existingToast = document.querySelector('.toast-notification');
+            if (existingToast) {
+                existingToast.remove();
+            }
+            const toast = document.createElement('div');
+            toast.textContent = message;
+            toast.className = 'toast-notification';
+            document.body.appendChild(toast);
+            setTimeout(() => toast.classList.add('show'), 10);
+            setTimeout(() => {
+                toast.classList.remove('show');
+                toast.addEventListener('transitionend', () => toast.remove());
+            }, 2500);
         }
-        const toast = document.createElement('div');
-        toast.textContent = message;
-        toast.className = 'toast-notification';
-        document.body.appendChild(toast);
-        setTimeout(() => toast.classList.add('show'), 10);
-        setTimeout(() => {
-            toast.classList.remove('show');
-            toast.addEventListener('transitionend', () => toast.remove());
-        }, 2500);
-    }
 
-    // --- MODAL HANDLING ---
-    const modals = {};
+        const qrCodeCache = {}; // Added for QR code caching
+
+        // --- MODAL HANDLING ---
+        const modals = {};
 
     function openModal(modal) {
         if (modal) {
@@ -103,6 +105,14 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
+        // Check if the QR code data is already in the cache
+        if (qrCodeCache[imageUrl]) {
+            console.log(`Using cached QR code for: ${imageUrl}`);
+            paymentLinkButton.href = qrCodeCache[imageUrl];
+            paymentLinkButton.classList.add('visible');
+            return; // Exit early as data is cached
+        }
+
         const img = new Image();
         img.crossOrigin = "Anonymous";
         
@@ -117,6 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const code = jsQR(imageData.data, imageData.width, imageData.height);
 
             if (code && code.data) {
+                qrCodeCache[imageUrl] = code.data; // Store in cache
                 paymentLinkButton.href = code.data;
                 paymentLinkButton.classList.add('visible');
             } else {
