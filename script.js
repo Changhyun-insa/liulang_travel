@@ -263,11 +263,16 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             const productId = productDetailMatch[1];
             paymentModal.dataset.productId = productId;
-            const paymentImage = document.getElementById('payment-image');
-            const imageUrl = `/product/${productId}/kakao_income.png`;
-            paymentImage.src = imageUrl;
+            const paymentImageKakao = document.getElementById('payment-image-kakao');
+            const paymentImageToss = document.getElementById('payment-image-toss');
+
+            paymentImageKakao.src = `/product/${productId}/kakao_income.png`;
+            paymentImageToss.src = `/product/${productId}/toss_income.png`;
+
+            paymentImageKakao.style.display = 'block';
+            paymentImageToss.style.display = 'none';
             
-            decodeQrCode(imageUrl);
+            decodeQrCode(paymentImageKakao.src); // Decode QR from Kakao image initially
 
             paymentModal.querySelectorAll('.payment-tab').forEach(t => t.classList.remove('active'));
             paymentModal.querySelector('.payment-tab[data-payment="kakao"]').classList.add('active');
@@ -281,19 +286,22 @@ document.addEventListener('DOMContentLoaded', () => {
         if (tab) {
             const productId = paymentModal.dataset.productId;
             if (!productId) return;
-            const paymentImage = document.getElementById('payment-image');
+            const paymentImageKakao = document.getElementById('payment-image-kakao');
+            const paymentImageToss = document.getElementById('payment-image-toss');
             const paymentMethod = tab.dataset.payment;
-            const imagePaths = {
-                kakao: `/product/${productId}/kakao_income.png`,
-                toss: `/product/${productId}/toss_income.png`
-            };
-            const newImageUrl = imagePaths[paymentMethod];
-            if (paymentImage && newImageUrl) {
-                paymentImage.src = newImageUrl;
-                decodeQrCode(newImageUrl);
-                paymentModal.querySelectorAll('.payment-tab').forEach(t => t.classList.remove('active'));
-                tab.classList.add('active');
+
+            if (paymentMethod === 'kakao') {
+                paymentImageKakao.style.display = 'block';
+                paymentImageToss.style.display = 'none';
+                decodeQrCode(paymentImageKakao.src);
+            } else if (paymentMethod === 'toss') {
+                paymentImageKakao.style.display = 'none';
+                paymentImageToss.style.display = 'block';
+                decodeQrCode(paymentImageToss.src);
             }
+
+            paymentModal.querySelectorAll('.payment-tab').forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
         }
     }
 

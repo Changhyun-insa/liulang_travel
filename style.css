@@ -963,7 +963,7 @@ html {
     margin-bottom: 1.5rem;
 }
 
-#payment-image {
+.payment-image { /* Changed ID to class */
     width: 60%;
     height: auto;
     border-radius: 10px;
