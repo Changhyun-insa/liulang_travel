@@ -408,4 +408,71 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
         }
     });
+
+    // --- Payment Modal Logic (Dynamic) ---
+    document.addEventListener('click', function(event) {
+        const paymentModal = document.getElementById('payment-modal');
+        if (!paymentModal) return;
+
+        const purchaseButton = event.target.closest('.purchase-button');
+        const closeButton = event.target.closest('.payment-modal-close');
+        const tab = event.target.closest('.payment-tab');
+
+        // --- Open Modal ---
+        if (purchaseButton) {
+            const productDetailMatch = window.location.pathname.match(/\/product\/(\d+)/);
+            if (!productDetailMatch) {
+                console.error("Could not determine product ID for payment modal.");
+                showToast("결제 정보를 불러올 수 없습니다.");
+                return;
+            }
+            const productId = productDetailMatch[1];
+            
+            paymentModal.dataset.productId = productId;
+
+            const paymentImage = document.getElementById('payment-image');
+            paymentImage.src = `/product/${productId}/kakao_income.png`;
+            
+            paymentModal.querySelectorAll('.payment-tab').forEach(t => t.classList.remove('active'));
+            paymentModal.querySelector('.payment-tab[data-payment="kakao"]').classList.add('active');
+
+            paymentModal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        // --- Close Modal ---
+        if (closeButton) {
+            paymentModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // --- Switch Tabs ---
+        if (tab) {
+            const productId = paymentModal.dataset.productId;
+            if (!productId) return;
+
+            const paymentImage = document.getElementById('payment-image');
+            const paymentMethod = tab.dataset.payment;
+            const imagePaths = {
+                kakao: `/product/${productId}/kakao_income.png`,
+                toss: `/product/${productId}/toss_income.png`
+            };
+
+            if (paymentImage && imagePaths[paymentMethod]) {
+                paymentImage.src = imagePaths[paymentMethod];
+
+                paymentModal.querySelectorAll('.payment-tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+            }
+        }
+    });
+
+    // Close modal when clicking on the background
+    window.addEventListener('click', (event) => {
+        const paymentModal = document.getElementById('payment-modal');
+        if (event.target === paymentModal) {
+            paymentModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+    });
 });

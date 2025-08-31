@@ -900,3 +900,80 @@ html {
 .sold-out-detail {
     filter: grayscale(100%);
 }
+
+.sold-out-detail .purchase-button {
+    display: none;
+}
+
+.purchase-button {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    margin-left: 1rem;
+}
+
+.purchase-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+}
+
+/* Payment Modal Styles */
+.payment-modal-content {
+    max-width: 500px;
+    text-align: center;
+}
+
+.payment-tabs {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid #ddd;
+}
+
+.payment-tab {
+    flex: 1;
+    padding: 0.75rem;
+    cursor: pointer;
+    background-color: #f1f1f1;
+    border: none;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+}
+
+.payment-tab:not(:last-child) {
+    border-right: 1px solid #ddd;
+}
+
+.payment-tab.active {
+    background-color: #667eea;
+    color: white;
+}
+
+.payment-image-container {
+    margin-bottom: 1.5rem;
+}
+
+#payment-image {
+    width: 60%;
+    height: auto;
+    border-radius: 10px;
+    display: block;
+    margin: 0 auto;
+}
+
+.payment-warning {
+    color: red !important;
+    font-weight: bold;
+    font-size: 1.1rem;
+    word-break: keep-all;
+}

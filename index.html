@@ -74,5 +74,21 @@
     </a>
     <a href="#" class="share-fab" id="share-button" aria-label="공유하기" style="display: none;"></a>
 
+    <!-- Payment Modal -->
+    <div id="payment-modal" class="modal">
+        <div class="modal-content payment-modal-content">
+            <span class="close-button payment-modal-close">&times;</span>
+            <h2>결제 진행</h2>
+            <div class="payment-tabs">
+                <button class="payment-tab active" data-payment="kakao">카카오페이</button>
+                <button class="payment-tab" data-payment="toss">토스</button>
+            </div>
+            <div class="payment-image-container">
+                <img id="payment-image" src="" alt="결제 이미지">
+            </div>
+            <p class="payment-warning">입금 후, 예약 확정을 위해 <strong>반드시 문의 채널(카카오톡 등)로 알려주셔야</strong> 구매가 최종 완료됩니다.</p>
+        </div>
+    </div>
+
 </body>
 </html>
