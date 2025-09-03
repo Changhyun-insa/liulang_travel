@@ -412,6 +412,7 @@ footer {
 
     nav.active {
         display: flex;
+        z-index: 1001;
     }
 
     .nav-link {
@@ -612,7 +613,7 @@ html {
     align-items: center;
     justify-content: center;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    z-index: 1000;
+    z-index: 999;
     transition: all 0.3s ease;
     text-decoration: none; /* Remove underline */
 }
@@ -650,7 +651,7 @@ html {
     height: 60px;
     border-radius: 50%;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    z-index: 1000;
+    z-index: 999;
     transition: all 0.3s ease;
     text-decoration: none;
     display: none; /* Initially hidden, controlled by JS */

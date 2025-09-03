@@ -377,11 +377,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 event.preventDefault();
                 history.pushState(null, '', href);
                 handleRouting();
+                // Close nav menu after routing
+                const navMenu = document.getElementById('nav-menu');
+                if (navMenu?.classList.contains('active')) {
+                    navMenu.classList.remove('active');
+                    document.querySelector('.menu-toggle')?.classList.remove('active');
+                }
                 return;
             }
 
             if (href && href.startsWith('#') && href.length > 1) {
                 event.preventDefault();
+                // Close nav menu before scrolling
+                const navMenu = document.getElementById('nav-menu');
+                if (navMenu?.classList.contains('active')) {
+                    navMenu.classList.remove('active');
+                    document.querySelector('.menu-toggle')?.classList.remove('active');
+                }
+
                 const targetElement = document.querySelector(href);
                 if (targetElement) {
                     targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -390,10 +403,13 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             
             if (anchor.classList.contains('nav-link') && !anchor.classList.contains('dropdown-toggle')) {
-                const navMenu = document.getElementById('nav-menu');
-                if (navMenu?.classList.contains('active')) {
-                    navMenu.classList.remove('active');
-                    document.querySelector('.menu-toggle')?.classList.remove('active');
+                const isTermsLink = anchor.id === 'open-standard-terms' || anchor.id === 'open-special-terms';
+                if (!isTermsLink) {
+                    const navMenu = document.getElementById('nav-menu');
+                    if (navMenu?.classList.contains('active')) {
+                        navMenu.classList.remove('active');
+                        document.querySelector('.menu-toggle')?.classList.remove('active');
+                    }
                 }
             }
         }
