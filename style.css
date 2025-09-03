@@ -838,15 +838,8 @@ html {
     .sticky-footer {
         padding: 0.75rem 0 !important;
     }
-    .sticky-footer .product-name {
-        font-size: 0.9rem !important;
-    }
-    .discounted-price-sticky {
-        font-size: 1.1rem !important;
-    }
     .purchase-button {
         padding: 0.7rem 1.2rem !important;
-        font-size: 0.9rem !important;
     }
 }
 
