@@ -388,16 +388,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (href && href.startsWith('#') && href.length > 1) {
                 event.preventDefault();
-                // Close nav menu before scrolling
+                const targetElement = document.querySelector(href);
+                if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+
+                // Close nav menu after scrolling
                 const navMenu = document.getElementById('nav-menu');
                 if (navMenu?.classList.contains('active')) {
                     navMenu.classList.remove('active');
                     document.querySelector('.menu-toggle')?.classList.remove('active');
-                }
-
-                const targetElement = document.querySelector(href);
-                if (targetElement) {
-                    targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
                 return;
             }
