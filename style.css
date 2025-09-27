@@ -712,6 +712,7 @@ html {
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 2rem;
     max-width: 1200px;
+    align-items: start;
     margin: 0 auto;
 }
 

@@ -198,7 +198,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     shareFab.style.display = 'none';
                 }
 
-                const soldOutProducts = ['1'];
+                const soldOutProducts = ['1','2'];
                 if (productDetailMatch && soldOutProducts.includes(productDetailMatch[1])) {
                     if (shareFab) {
                         shareFab.style.display = 'none';
