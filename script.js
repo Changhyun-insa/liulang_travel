@@ -231,7 +231,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         });
                         productList.innerHTML = '';
                         availableItems.forEach(item => productList.appendChild(item));
-                        soldOutItems.forEach(item => productList.appendChild(item));
+                        soldOutItems.reverse().forEach(item => productList.appendChild(item));
                     }
                 }
             } catch (error) {
